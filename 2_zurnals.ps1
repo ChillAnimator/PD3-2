@@ -1,15 +1,15 @@
 $days = 3
-$logName = "Application"
-$docPath = [Environment]::GetFolderPath("MyDocuments")
-$filePath = Join-Path -Path $docPath -ChildPath "Warnings.txt"
-$startTime = (Get-Date).AddDays(-$days)
-Get-EventLog -LogName $logName -After $startTime |
-	Where-Object { $_.EntryType -eq "Warning" } |
-	Out-File -FilePath $filePath -Force
-"`n`n--- Top 3 Warning Sources (Count) ---`n" | Out-File -FilePath $filePath -Append
-Get-EventLog -LogName $logName -After $startTime |
-	Where-Object { $_.EntryType -eq "Warning" } |
-	Group-Object -Property Source |
-	Sort-Object -Property Count -Descending |
-	Select-Object -First 3 |
-	Out-File -FilePath $filePath -Append
+$name = "Application"
+$dpath = [Environment]::GetFolderPath("MyDocuments")
+$fpath = join-path -path $dpath -childpath "Warnings.txt"
+$startTime = (get-date).AddDays(-$days)
+get-eventlog -logname $name -after $startTime |
+	where-object { $_.EntryType -eq "Warning" } |
+	out-file -filepath $fpath -force
+"`n`n--- Top 3 Warning Sources ---`n" | out-file -filepath $fpath -append
+get-eventlog -logname $name -after $startTime |
+	where-object { $_.EntryType -eq "Warning" } |
+	group-object -property Source |
+	sort-object -property Count -descending |
+	select-object -First 3 |
+	out-file -filepath $fpath -append
